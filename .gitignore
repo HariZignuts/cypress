@@ -120,3 +120,7 @@ dist
 # macOS Finder metadata
 .DS_Store
 
+
+
+# Cypress
+cypress.env.json

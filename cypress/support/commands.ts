@@ -35,3 +35,34 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add("getByDataCy", (selector) => {
+  return cy.get(`[data-cy=${selector}]`);
+});
+
+Cypress.Commands.add("login", (email: string, password: string) => {
+  cy.get(".action-email").clear().type(email);
+  cy.get(".action-focus").clear().type(password);
+});
+
+Cypress.Commands.add("sessionLogin", (email: string, passoword: string) => {
+  cy.session([email, passoword], () => {
+    cy.visit("/commands/actions");
+    cy.login(email, passoword);
+
+    cy.get(".action-email").should("have.value", email);
+    cy.get(".action-focus").should("have.value", passoword);
+  });
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject = any> {
+      getByDataCy(selector: string): Chainable<JQuery<HTMLElement>>;
+      login(email: string, password: string): Chainable<void>;
+      sessionLogin(email: string, passoword: string): Chainable<void>;
+    }
+  }
+}
+
+export {};
